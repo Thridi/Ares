@@ -85,16 +85,23 @@
           </p>
         </div>
         <div role="tabpanel" class="tab-pane" id="hire">
-          <button onClick="hire(lumberjack)" type="button" class="btn btn-outline-primary learn"
+          <button onClick="hire(Jobs.lumberJack)" type="button" class="btn btn-outline-primary learn"
             id="lumberjackCount">Hire lumberjack<br>(50)</button>
-          <button onClick="hire(fiberCollector)" type="button" class="btn btn-outline-primary learn"
+          <button onClick="hire(Jobs.fiberCollector)" type="button" class="btn btn-outline-primary learn"
             id="fiberCollectorCount">Hire fiber collector<br>(50)</button>
         </div>
         <div role="tabpanel" class="tab-pane" id="upgrades">
           <button onClick="learn(woodenStaff)" type="button" class="btn btn-outline-primary learn"
             id="woodenStaffCount">Learn staff's craft 📖<br>(40)</button>
         </div>
-				<div role="tabpanel" class="tab-pane text-white" id="quests">Coming soon!</div>
+				<div role="tabpanel" class="tab-pane text-white" id="quests">
+          <p class="text-white fixed-center text-center">
+            You are on a quest to obtain <span id="questItem"></span>
+          </p>
+          <p class="text-white fixed-center text-center">
+            Obtained: <span id="questCurrent">0</span> / <span id="questMax"></span>
+          </p>
+        </div>
 				<div role="tabpanel" class="tab-pane text-white" id="settings">Coming soon!</div>
       </div>
     </div>

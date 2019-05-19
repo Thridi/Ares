@@ -115,6 +115,7 @@ function updateItemTotals() {
 // Ressources clicker
   function add(material) {
         material.total = material.total + material.increment;
+        updateQuestItems(material);
         updateResourceTotals();
   }
 
@@ -175,19 +176,36 @@ function updateItemTotals() {
        }
     }
 
-
+function updateQuestInfo() {
+  let quest = currentQuest || {item: "", obtained: 0, qty: 0};
+  document.getElementById("questItem").innerText = quest.item;
+  document.getElementById("questCurrent").innerText = quest.obtained;
+  document.getElementById("questMax").innerText = quest.qty;
+}
 function checkQuest() {
   if (currentQuest === null && Math.random() < 0.25) {
     currentQuest = Quests[0];
-    currentQuest.qty = Math.random() * currentQuest.qtyMax + currentQuest.qtyMin;
+    currentQuest.qty = Math.round(Math.random() * currentQuest.qtyMax) + currentQuest.qtyMin;
+    currentQuest.obtained = 0;
+    updateQuestInfo()
   }
 }
-
+function updateQuestItems(res) {
+  if (currentQuest !== null && res.toString() === currentQuest.item) {
+    currentQuest.obtained += Resources[res].increment;
+    if (currentQuest.obtained === currentQuest.qty) {
+      // Quest completed! -- Hand out reward here
+      currentQuest = null;
+    }
+    updateQuestInfo();
+  }
+}
 
     //Auto-collect
     function autoIncrement() {
       for (var res in Resources) {
         Resources[res].total += Jobs[Resources[res].job].increment;
+        updateQuestItems(res);
       }
       updateResourceTotals();
     }
