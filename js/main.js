@@ -8,30 +8,57 @@
 
 //Init game data
 
+let currentQuest = null;
+
+// Quests
+const Quests = [
+  {
+    item: "wood",
+    qtyMin: 5,
+    qtyMax: 15,
+    rewardMoney: 0,
+    rewardXp: 0
+  }
+];
 //Currency
   
-  
-//Ressources
-  var wood = {
-      total: 0,
-      increment: 0.25,
+const Resources = {
+  wood: {
+    total: 0,
+    increment: 0.25,
+    job: "lumberJack"
   },
-  fiber = {
-      total: 0,
-      increment: 0.50,
+  fiber: {
+    total: 0,
+    increment: 0.50,
+    job: "fiberCollector"
+  }
+};
+const Jobs = {
+  lumberJack: {
+    id: "lumberjackCount",
+    total: 0,
+    hirePrice: 50,
+    hired: false,
+    increment: 0
   },
-
-
-//Currency
-    money = {
-      total: 0,
-    },
+  fiberCollector: {
+    id: "fiberCollectorCount",
+    total: 0,
+    hirePrice: 50,
+    hired: false,
+    increment: 0
+  }
+}
   
+let money = {
+      total: 0
+},
 //Items
     woodenKey = {
       id: 'woodenKeyCount',
       total: 0,
-       price: 3,
+       price: 3
    },
    woodenStaff = {
        id: 'woodenStaffCount',
@@ -39,7 +66,7 @@
        price: 10,
        learned: false,
        learnPrice: 40,
-       tab: 'two-tab',
+       tab: 'two-tab'
    },
 
 //Upgrades available
@@ -50,24 +77,8 @@
 //Hires available
    hires = {
        total: 2,
-   },
-//Jobs
-    lumberjack = {
-        id: "lumberjackCount",
-        total: 0,
-        hirePrice: 50,
-        hired: false,
-        increment: 0,
-    },
-    fiberCollector = {
-      id: "fiberCollectorCount",
-      total: 0,
-      hirePrice: 50,
-      hired: false,
-      increment: 0,
-    }
+   };
 
-  
  
   //Unlockables
   document.getElementById('two-tab').style.display = 'none';  
@@ -84,13 +95,13 @@
  
   function updateResourceTotals() {
 	//Update page with resource numbers
-	document.getElementById('wood').innerHTML = roundN(wood.total, 2);
-  document.getElementById('fibers').innerHTML = roundN(fiber.total, 2);
+	document.getElementById('wood').innerHTML = roundN(Resources.wood.total, 2);
+  document.getElementById('fibers').innerHTML = roundN(Resources.fiber.total, 2);
   document.getElementById('money').innerHTML = roundN(money.total, 2);
   document.getElementById('upgradesNb').innerHTML = upgrades.total;
   document.getElementById('hiresNb').innerHTML = hires.total;
-  document.getElementById('woodSpeed').innerHTML = lumberjack.increment; 
-  document.getElementById('fibersSpeed').innerHTML = fiberCollector.increment; 
+  document.getElementById('woodSpeed').innerHTML = Jobs.lumberJack.increment; 
+  document.getElementById('fibersSpeed').innerHTML = Jobs.fiberCollector.increment; 
    }
 
 function updateItemTotals() {
@@ -165,18 +176,24 @@ function updateItemTotals() {
     }
 
 
-
+function checkQuest() {
+  if (currentQuest === null && Math.random() < 0.25) {
+    currentQuest = Quests[0];
+    currentQuest.qty = Math.random() * currentQuest.qtyMax + currentQuest.qtyMin;
+  }
+}
 
 
     //Auto-collect
-    function autoIncrement(resource, job) {
-      resource.total += job.increment;
+    function autoIncrement() {
+      for (var res in Resources) {
+        Resources[res].total += Jobs[Resources[res].job].increment;
+      }
       updateResourceTotals();
     }
     
     setInterval(function(){ 
       
-      autoIncrement(wood, lumberjack);
-      autoIncrement(fiber, fiberCollector);
-    
+      autoIncrement();
+      checkQuest();
     }, 1000);
